@@ -6,7 +6,7 @@ Do not use this image in production! This image is meant to be used for developm
 
 ## Status
 
-Master Branch: [![CircleCI](https://circleci.com/gh/ampersand8/credhub-docker/tree/master.svg?style=svg)](https://circleci.com/gh/ampersand8/credhub-docker/tree/master
+Master Branch: [![CircleCI](https://circleci.com/gh/ampersand8/credhub-docker/tree/master.svg?style=svg)](https://circleci.com/gh/ampersand8/credhub-docker/tree/master)
 
 ## Run without UAA
 
