@@ -5,6 +5,7 @@ jobs:
       - image: docker:stable-git
     steps:
       - checkout
+      - run: git submodule update --init --recursive
       - setup_remote_docker:
           version: 17.05.0-ce
       # build the image
