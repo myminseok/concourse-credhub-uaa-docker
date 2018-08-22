@@ -10,5 +10,5 @@ jobs:
           version: 17.05.0-ce
       # build the image
       - run: docker build -t ampersand8/credhub .
-      - run: docker login -e $DOCKER_HUB_EMAIL -u $DOCKER_HUB_USER_ID -p $DOCKER_HUB_PWD
+      - run: docker login -u $DOCKER_HUB_USER_ID -p $DOCKER_HUB_PWD
       - run: docker push ampersand8/credhub
