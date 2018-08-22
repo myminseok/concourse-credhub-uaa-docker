@@ -4,6 +4,10 @@ Docker image for CredHub (include a docker-compose file to run with uaa).
 
 Do not use this image in production! This image is meant to be used for development and testing purposes only.
 
+## Status
+
+Master Branch: [![CircleCI](https://circleci.com/gh/ampersand8/credhub-docker/tree/master.svg?style=svg)](https://circleci.com/gh/ampersand8/credhub-docker/tree/master
+
 ## Run without UAA
 
 ```bash
