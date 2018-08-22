@@ -4,13 +4,13 @@ services:
   uaa:
     image: pcfseceng/uaa
     volumes:
-      - ./config/uaa.yml:/uaa/uaa.yml
+      - ./uaa.yml:/uaa/uaa.yml
     ports:
-    - 8080:8080
+    - 8081:8080
     restart: always
 
   credhub:
-    image: orangeopensource/credhub
+    image: ampersand8/credhub
     ports:
       - "9000:9000"
     links:
@@ -18,5 +18,5 @@ services:
     depends_on:
       - uaa
     environment:
-      UAA_URL: http://localhost:8080/uaa
+      UAA_URL: http://localhost:8081/uaa
       UAA_INTERNAL_URL: http://uaa:8080/uaa
