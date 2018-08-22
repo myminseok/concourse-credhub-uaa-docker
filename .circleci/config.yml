@@ -1,0 +1,11 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: docker:stable-git
+    steps:
+      - checkout
+      - setup_remote_docker:
+          version: 17.05.0-ce
+      # build the image
+      - run: docker build -t ampersand8/credhub .
