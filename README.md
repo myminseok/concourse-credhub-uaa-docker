@@ -58,3 +58,16 @@ utmLo8kRMd9hXZa06XIiLI23gOo08KsE98G9P79RdhpeZweAhbZoghRxj/YVmmEI
 qe3dqmF87rObz/Vht6J+pH9ht30=
 -----END CERTIFICATE-----
 ```
+
+## Test with curl
+Generate a sample password
+```
+export ACCESS_TOKEN=$(curl -u 'credhub_client:secret' "http://localhost:8080/uaa/oauth/token?grant_type=client_credentials&response_type=token" -H 'Accept: application/json' | jq -r .access_token)
+curl "https://localhost:9000/api/v1/data"   -X POST   -d '{
+      "name": "/example-password",
+      "type": "password",
+      "parameters": {
+        "length": 40
+      }
+     }'   -H "authorization: bearer ${ACCESS_TOKEN}"   -H 'content-type: application/json' --cacert ~/dev/credhub-docker/server_ca_cert.pem
+```
