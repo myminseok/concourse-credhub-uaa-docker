@@ -16,7 +16,7 @@ EOF
 
 fi
 
-exec ./gradlew --no-daemon bootRun \
+exec ./gradlew --no-daemon bootRun --info \
  -Djava.security.egd=file:/dev/urandom \
  -Djdk.tls.ephemeralDHKeySize=3072 \
  -Djdk.tls.namedGroups='secp384r1' \
