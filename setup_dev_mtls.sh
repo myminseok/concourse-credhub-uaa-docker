@@ -117,6 +117,15 @@ add_client_ca_to_trust_store() {
 	    -keystore ${MTLS_TRUST_STORE} -storepass ${KEYSTORE_PASSWORD}
 }
 
+import_default_truststore_to_custom() {
+  echo "Importing default trust store to custom trust store"
+  keytool -importkeystore \
+    -srckeystore ${JAVA_HOME}/jre/lib/security/cacerts \
+    -destkeystore ${AUTH_SERVER_TRUST_STORE} \
+    -deststoretype pkcs12 \
+    -storepass ${KEYSTORE_PASSWORD}
+}
+
 setup_auth_server_trust_store() {
     echo "Adding dev UAA CA to auth server trust store"
     keytool -import \
@@ -135,6 +144,7 @@ main() {
         generate_client_ca
         add_client_ca_to_trust_store
         setup_tls_key_store
+        import_default_truststore_to_custom
         setup_auth_server_trust_store
 
         echo "Finished setting up key stores for TLS and mTLS!"
