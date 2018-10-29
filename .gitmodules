@@ -1,6 +1,8 @@
 [submodule "credhub"]
 	path = credhub
 	url = https://github.com/cloudfoundry-incubator/credhub.git
+	branch = 2.0.x
 [submodule "credhub-acceptance-tests"]
 	path = credhub-acceptance-tests
 	url = https://github.com/cloudfoundry-incubator/credhub-acceptance-tests.git
+	branch = 2.0.x
