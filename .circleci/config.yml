@@ -6,11 +6,12 @@ jobs:
     steps:
       - checkout
       - run: git submodule update --init --recursive
-      - run: cd credhub && git checkout origin/1.9.x; cd ..
-      - run: cd credhub-acceptance-tests && git checkout origin/1.9.x; cd ..
+      - run: cd credhub && git checkout d8a969690223661f44dd2fe4b48829a19f16e42c; cd ..
+      - run: cd credhub-acceptance-tests && git checkout master; cd ..
       - setup_remote_docker:
           version: 18.05.0-ce
       # build the image
+      - run: ./prepare_build.sh
       - run: docker build -t ampersand8/credhub .
       - run: docker login -u $DOCKER_HUB_USER_ID -p $DOCKER_HUB_PWD
       - run: docker push ampersand8/credhub

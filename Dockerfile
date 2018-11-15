@@ -1,13 +1,14 @@
-FROM openjdk:8
-COPY ./credhub /usr/src/credhub
-COPY ./setup_dev_mtls.sh /usr/src/credhub/setup_dev_mtls.sh
-COPY ./fetch-version.sh /usr/src/credhub/fetch-version.sh
+FROM anapsix/alpine-java
 COPY ./credhub-acceptance-tests /usr/src/acceptance/src/github.com/cloudfoundry-incubator/credhub-acceptance-tests
-ENV GOPATH /usr/src/acceptance
+COPY ./credhub/build/libs/credhub.jar /usr/src/credhub/credhub.jar
+RUN mkdir -p /usr/src/credhub/src/main /usr/src/credhub/test
+COPY ./credhub/src/main/resources /usr/src/credhub/src/main/resources
+COPY ./credhub/src/test/resources /usr/src/credhub/src/test/resources
+COPY truststore_setup.sh /usr/src/credhub/truststore_setup.sh
+ENV GOPATH=/usr/src/acceptance \
+    JAVA_HOME=/opt/jdk
 WORKDIR /usr/src/credhub
-
-RUN "./setup_dev_mtls.sh"
-RUN ["./gradlew", "--no-daemon", "assemble"]
+RUN ./truststore_setup.sh
 
 COPY ./entrypoint.sh /usr/src/credhub/entrypoint.sh
 ENTRYPOINT ["./entrypoint.sh"]
