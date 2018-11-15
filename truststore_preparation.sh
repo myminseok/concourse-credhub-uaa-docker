@@ -105,7 +105,6 @@ generate_client_ca() {
 
 main() {
     pushd "${DIRNAME}/src/test/resources" >/dev/null
-        clean
         generate_server_ca
         generate_client_ca
         setup_tls_key_store

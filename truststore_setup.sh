@@ -11,11 +11,6 @@ MTLS_TRUST_STORE=trust_store.jks
 AUTH_SERVER_TRUST_STORE=auth_server_trust_store.jks
 UAA_CA=ca/dev_uaa.pem
 
-clean() {
-    echo "Removing any existing key stores and certs..."
-    rm -f "${DIRNAME}"/*.jks "${DIRNAME}"/*.csr "${DIRNAME}"/*.srl "${DIRNAME}"/*.pem
-}
-
 setup_tls_key_store() {
     echo "Import signed certificate into the keystore"
 	keytool -importkeystore \
