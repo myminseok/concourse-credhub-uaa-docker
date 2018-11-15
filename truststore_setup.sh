@@ -106,7 +106,7 @@ setup_auth_server_trust_store() {
 }
 
 main() {
-    pushd "${DIRNAME}/src/test/resources" >/dev/null
+    cd "${DIRNAME}/src/test/resources"
         echo "$(pwd)"
         generate_server_ca
         add_client_ca_to_trust_store
@@ -123,7 +123,7 @@ main() {
             --cert "${GOPATH}/src/github.com/cloudfoundry-incubator/credhub-acceptance-tests/certs/client.pem" \
             --key "${GOPATH}"/src/github.com/cloudfoundry-incubator/credhub-acceptance-tests/certs/client_key.pem
 
-    popd >/dev/null
+    cd -
 }
 
 main

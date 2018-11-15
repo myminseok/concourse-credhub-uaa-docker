@@ -104,7 +104,7 @@ generate_client_ca() {
 }
 
 main() {
-    pushd "${DIRNAME}/src/test/resources" >/dev/null
+    cd "${DIRNAME}/src/test/resources"
         generate_server_ca
         generate_client_ca
         setup_tls_key_store
@@ -118,7 +118,7 @@ main() {
             --cert "${GOPATH}/src/github.com/cloudfoundry-incubator/credhub-acceptance-tests/certs/client.pem" \
             --key "${GOPATH}"/src/github.com/cloudfoundry-incubator/credhub-acceptance-tests/certs/client_key.pem
 
-    popd >/dev/null
+    cd -
 }
 
 main
