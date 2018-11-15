@@ -33,6 +33,28 @@ You can now connect to credhub with this command:
 credhub-cli login -s https://localhost:9000 -u credhub -p password --ca-cert=server_ca_cert.pem
 ```
 
+## Use with curl
+
+Get token from UAA
+```bash
+token=$(curl -q -s -XPOST -H"Application/json" --data "client_id=credhub_client&client_secret=secret&client_id=credhub_client&grant_type=client_credentials&response_type=token" http://localhost:8081/uaa/oauth/token | jq -r .access_token)
+```
+
+Get CredHub version
+```bash
+curl -k https://localhost:9000/version -H "content-type: application/json" -H "authorization: bearer ${token}"
+```
+
+Set CredHub JSON credential
+```bash
+curl -k -XPUT https://localhost:9000/api/v1/data -H "content-type: application/json" -H "authorization: bearer ${token}" -d '{"name": "/thisissometest","type":"json","value": {"password":"testpassword"}}' | jq .
+```
+
+Get CredHub credential 
+```bash
+curl -k https://localhost:9000/api/v1/data?name=/thisissometest -H "content-type: application/json" -H "authorization: bearer ${token}" | jq .
+```
+
 ## CA Certificate
 The CA Certificate is valid until the year 2118.
 
