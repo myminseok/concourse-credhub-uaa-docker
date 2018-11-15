@@ -2,7 +2,7 @@ version: 2
 jobs:
   build:
     docker:
-      - image: circleci/openjdk
+    - image: circleci/openjdk:8-jdk-browsers-legacy
     steps:
       - checkout
       - run: git submodule update --init --recursive
