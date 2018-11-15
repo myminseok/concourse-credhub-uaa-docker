@@ -11,7 +11,7 @@ jobs:
       - setup_remote_docker:
           version: 18.05.0-ce
       # build the image
-      - run: ./prepare_build.sh
+      - run: cd ${CIRCLE_WORKING_DIRECTORY} && ./prepare_build.sh
       - run: docker build -t ampersand8/credhub .
       - run: docker login -u $DOCKER_HUB_USER_ID -p $DOCKER_HUB_PWD
       - run: docker push ampersand8/credhub
