@@ -3,20 +3,44 @@ version: '2'
 services:
   uaa:
     image: pcfseceng/uaa
-    volumes:
-      - ./uaa.yml:/uaa/uaa.yml
-    ports:
-    - 8081:8080
+    volumes: ["./uaa.yml:/uaa/uaa.yml"]
+    ports: ["8081:8080"]
     restart: always
 
   credhub:
     image: ampersand8/credhub
-    ports:
-      - "9000:9000"
-    links:
-      - uaa:uaa
-    depends_on:
-      - uaa
+    ports: ["9000:9000"]
+    links: ["uaa:uaa"]
+    depends_on: [uaa]
     environment:
-      UAA_URL: http://localhost:8081/uaa
-      UAA_INTERNAL_URL: http://uaa:8080/uaa
+    - UAA_URL=http://localhost:8081/uaa
+    - UAA_INTERNAL_URL=http://uaa:8080/uaa
+
+  concourse-db:
+    image: postgres
+    environment:
+    - POSTGRES_DB=concourse
+    - POSTGRES_PASSWORD=concourse_pass
+    - POSTGRES_USER=concourse_user
+    - PGDATA=/database
+
+  concourse:
+    image: concourse/concourse:4.2.1
+    command: quickstart
+    privileged: true
+    volumes: ["./server_ca_cert.pem:/tmp/credhub.cacert"]
+    links: ["credhub:credhub"]
+    depends_on: [concourse-db,credhub]
+    ports: ["8080:8080"]
+    environment:
+    - CONCOURSE_POSTGRES_HOST=concourse-db
+    - CONCOURSE_POSTGRES_USER=concourse_user
+    - CONCOURSE_POSTGRES_PASSWORD=concourse_pass
+    - CONCOURSE_POSTGRES_DATABASE=concourse
+    - CONCOURSE_EXTERNAL_URL
+    - CONCOURSE_ADD_LOCAL_USER=admin:admin
+    - CONCOURSE_MAIN_TEAM_LOCAL_USER=admin
+    - CREDHUB_URL=https://credhub:9000
+    - CREDHUB_USERNAME=credhub
+    - CREDHUB_PASSWORD=password
+    - CREDHUB_CACERT=/tmp/credhub.cacert

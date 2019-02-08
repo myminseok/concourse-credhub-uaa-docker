@@ -8,7 +8,7 @@ COPY truststore_setup.sh /usr/src/credhub/truststore_setup.sh
 ENV GOPATH=/usr/src/acceptance \
     JAVA_HOME=/opt/jdk
 WORKDIR /usr/src/credhub
-RUN ./truststore_setup.sh
+#RUN ./truststore_setup.sh
 
 COPY ./entrypoint.sh /usr/src/credhub/entrypoint.sh
 ENTRYPOINT ["./entrypoint.sh"]
