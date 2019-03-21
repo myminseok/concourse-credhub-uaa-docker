@@ -19,6 +19,14 @@ oauth:
       scope: uaa.none
       authorities: credhub.read,credhub.write
       access-token-validity: 86400 # 1 day
+    concourse_to_credhub:
+      override: true
+      authorized-grant-types: client_credentials
+      scope: ""
+      authorities: credhub.read,credhub.write
+      access-token-validity: 3600
+      refresh-token-validity: 3600
+      secret: secret
 jwt:
   token:
     verification-key: |

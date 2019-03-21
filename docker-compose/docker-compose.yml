@@ -13,7 +13,7 @@ services:
     links: ["uaa:uaa"]
     depends_on: [uaa]
     environment:
-    - UAA_URL=http://localhost:8081/uaa
+    - UAA_URL=http://uaa:8080/uaa
     - UAA_INTERNAL_URL=http://uaa:8080/uaa
 
   concourse-db:
@@ -40,7 +40,8 @@ services:
     - CONCOURSE_EXTERNAL_URL
     - CONCOURSE_ADD_LOCAL_USER=admin:admin
     - CONCOURSE_MAIN_TEAM_LOCAL_USER=admin
-    - CREDHUB_URL=https://credhub:9000
-    - CREDHUB_USERNAME=credhub
-    - CREDHUB_PASSWORD=password
-    - CREDHUB_CACERT=/tmp/credhub.cacert
+    - CONCOURSE_CREDHUB_URL=https://credhub:9000/api/
+    - CONCOURSE_CREDHUB_CLIENT_ID=concourse_to_credhub
+    - CONCOURSE_CREDHUB_CLIENT_SECRET=secret
+    - CONCOURSE_CREDHUB_CA_CERT=/tmp/credhub.cacert
+    - CONCOURSE_CREDHUB_INSECURE_SKIP_VERIFY=
