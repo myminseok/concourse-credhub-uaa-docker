@@ -41,7 +41,7 @@ services:
     - CONCOURSE_ADD_LOCAL_USER=admin:admin
     - CONCOURSE_MAIN_TEAM_LOCAL_USER=admin
     - CONCOURSE_CREDHUB_URL=https://credhub:9000/api/
-    - CONCOURSE_CREDHUB_CLIENT_ID=concourse_to_credhub
+    - CONCOURSE_CREDHUB_CLIENT_ID=credhub_client
     - CONCOURSE_CREDHUB_CLIENT_SECRET=secret
     - CONCOURSE_CREDHUB_CA_CERT=/tmp/credhub.cacert
     - CONCOURSE_CREDHUB_INSECURE_SKIP_VERIFY=
