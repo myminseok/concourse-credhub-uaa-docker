@@ -1,6 +1,6 @@
 # CredHub
 
-Docker image for CredHub (include a docker-compose file to run with uaa).
+Docker image for CredHub (include a docker-compose file to run with UAA).
 
 Do not use this image in production! This image is meant to be used for development and testing purposes only.
 
@@ -19,11 +19,11 @@ docker run -d -p 127.0.0.1:9000:9000 ampersand8/credhub:latest
 You will need a config file for UAA which can be found [here](/docker-compose/uaa.yml).
 
 1. Start a UAA with Docker: `docker run -d --name uaa --mount type=bind,source=$PWD/docker-compose/config/uaa.yml,target=/uaa/uaa.yml -p 127.0.0.1:8081:8080 pcfseceng/uaa:latest`
-2. Start credhub with docker with binding uaa: `docker run -d --link uaa -e UAA_URL=http://localhost:8081/uaa -e UAA_INTERNAL_URL=http://uaa:8080/uaa -p 127.0.0.1:9000:9000 pcfseceng/uaa:latest`
+2. Start CredHub with Docker with binding UAA: `docker run -d --link uaa -e UAA_URL=http://uaa:8080/uaa -e UAA_INTERNAL_URL=http://uaa:8080/uaa -p 127.0.0.1:9000:9000 pcfseceng/uaa:latest`
 
 ## Run docker-compose
 
-Clone this repo and run `docker-compose up -d` inside folder [/docker-compose](/docker-compose).
+Clone this repo and run `docker-compose up` or `docker-compose up -d` inside folder [/docker-compose](/docker-compose).
 
 ## Use with credhub-cli
 
@@ -31,6 +31,8 @@ You can now connect to credhub with this command:
 
 ```bash
 credhub-cli login -s https://localhost:9000 -u credhub -p password --ca-cert=server_ca_cert.pem
+or
+credhub-cli login -s https://localhost:9000 -u credhub -p password --skip-tls-validation
 ```
 
 ## Use with curl
@@ -91,5 +93,5 @@ curl "https://localhost:9000/api/v1/data"   -X POST   -d '{
       "parameters": {
         "length": 40
       }
-     }'   -H "authorization: bearer ${ACCESS_TOKEN}"   -H 'content-type: application/json' --cacert ~/dev/credhub-docker/server_ca_cert.pem
+     }'   -H "authorization: bearer ${ACCESS_TOKEN}"   -H 'content-type: application/json' --cacert server_ca_cert.pem
 ```
