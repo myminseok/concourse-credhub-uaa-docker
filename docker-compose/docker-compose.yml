@@ -1,47 +1,56 @@
-version: '2'
+version: '3'
 
 services:
+
   uaa:
     image: pcfseceng/uaa
     volumes: ["./uaa.yml:/uaa/uaa.yml"]
-    ports: ["8081:8080"]
+    ports: ["8080:8080"]  ## donot change this port
     restart: always
 
   credhub:
-    image: ampersand8/credhub
+    #image: ampersand8/credhub ##  credhub login ok but, when set value error
+    image: orangeopensource/credhub
+    #image: springcloudservices/credhub-server
     ports: ["9000:9000"]
-    links: ["uaa:uaa"]
-    depends_on: [uaa]
+    links:
+    - uaa
+    depends_on:
+    - uaa
     environment:
-    - UAA_URL=http://uaa:8080/uaa
-    - UAA_INTERNAL_URL=http://uaa:8080/uaa
+      #UAA_URL: http://localhost:8080/uaa  ## error-> failed to interpolate task config: var lookup 'hello': invalid character '<' looking for beginning of value
+      UAA_URL: http://172.16.58.1:8080/uaa  ## <-- set this to HOST machine IP.
+      UAA_INTERNAL_URL: http://uaa:8080/uaa
 
   concourse-db:
     image: postgres
     environment:
-    - POSTGRES_DB=concourse
-    - POSTGRES_PASSWORD=concourse_pass
-    - POSTGRES_USER=concourse_user
-    - PGDATA=/database
+      POSTGRES_DB: concourse
+      POSTGRES_PASSWORD: concourse_pass
+      POSTGRES_USER: concourse_user
+      PGDATA: /database
 
   concourse:
     image: concourse/concourse:4.2.1
+    #image: concourse/concourse
     command: quickstart
     privileged: true
-    volumes: ["./server_ca_cert.pem:/tmp/credhub.cacert"]
-    links: ["credhub:credhub"]
-    depends_on: [concourse-db,credhub]
-    ports: ["8080:8080"]
+    #volumes: ["./server_ca_cert:/tmp/credhub_cacert"]
+    links: ["credhub"]
+    depends_on: ["concourse-db","credhub"]
+    ports: ["8081:8080"]
     environment:
-    - CONCOURSE_POSTGRES_HOST=concourse-db
-    - CONCOURSE_POSTGRES_USER=concourse_user
-    - CONCOURSE_POSTGRES_PASSWORD=concourse_pass
-    - CONCOURSE_POSTGRES_DATABASE=concourse
-    - CONCOURSE_EXTERNAL_URL
-    - CONCOURSE_ADD_LOCAL_USER=admin:admin
-    - CONCOURSE_MAIN_TEAM_LOCAL_USER=admin
-    - CONCOURSE_CREDHUB_URL=https://credhub:9000/api/
-    - CONCOURSE_CREDHUB_CLIENT_ID=credhub_client
-    - CONCOURSE_CREDHUB_CLIENT_SECRET=secret
-    - CONCOURSE_CREDHUB_CA_CERT=/tmp/credhub.cacert
-    - CONCOURSE_CREDHUB_INSECURE_SKIP_VERIFY=
+      #CONCOURSE_LOG_LEVEL: debug
+      CONCOURSE_POSTGRES_HOST: concourse-db
+      CONCOURSE_POSTGRES_USER: concourse_user
+      CONCOURSE_POSTGRES_PASSWORD: concourse_pass
+      CONCOURSE_POSTGRES_DATABASE: concourse
+      CONCOURSE_EXTERNAL_URL: http://localhost:8081
+      CONCOURSE_ADD_LOCAL_USER: test:test
+      CONCOURSE_MAIN_TEAM_LOCAL_USER: test
+      CONCOURSE_CREDHUB_URL: https://credhub:9000
+      CONCOURSE_CREDHUB_CLIENT_ID: credhub_client
+      CONCOURSE_CREDHUB_CLIENT_SECRET: secret
+     # CONCOURSE_CREDHUB_CA_CERT: /tmp/credhub_cacert/server_ca_cert.pem
+      CONCOURSE_CREDHUB_INSECURE_SKIP_VERIFY: "true"
+
